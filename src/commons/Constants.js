@@ -1,0 +1,30 @@
+const Constants  = {
+	APPLICATION : {
+		LOGIN_DASHBOARD : 'LOGIN_DASHBOARD',
+		HOME_USERS      : 'HOME_USERS',
+		HOME_MAP        : 'HOME_MAP'
+	},
+	APPLICATION_TITLE   : {
+		LOGIN_DASHBOARD : 'Login Page',
+		HOME            : 'Admin Operations',
+		BLANK           : 'Getting data..'
+	},
+	USERS_OPERATION     : {
+		CUSTOMERS       : 'CUSTOMERS',
+		RESTAURANTS     : 'RESTAURANTS'
+	},
+	FIRE_BASE_CONFIG            : {
+		apiKey: "AIzaSyCmZpd23BMyDDTnNhcHoXPUnD6eLgxZ6J8",
+	    authDomain: "asatakaonproj.firebaseapp.com",
+	    databaseURL: "https://asatakaonproj.firebaseio.com",
+	    projectId: "asatakaonproj",
+	    storageBucket: "asatakaonproj.appspot.com",
+	    messagingSenderId: "1094462141971"
+	},
+	LOG_DISPLAY_TIME    : 1500,
+	ADMIN_ACCOUNT_USERNAME : 'ADMIN_ACCOUNT_USERNAME',
+	ADMIN_ACCOUNT_PASSWORD : 'ADMIN_ACCOUNT_PASSWORD' 
+};
+
+
+export default Constants;

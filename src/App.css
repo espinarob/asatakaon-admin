@@ -1,0 +1,28 @@
+.App {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+*{
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+}
+#ApplicationHeader{
+  height: 50px;
+  width: 5000px;
+  position: relative;
+  background-color: #000;
+  position: fixed;
+}
+#ApplicationContent{
+  height: 100%;
+  width: 100%;
+  top: 50px;
+  position: relative;
+  overflow: scroll;
+  border: solid;
+  overflow-x: hidden;
+}
