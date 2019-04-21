@@ -12,7 +12,8 @@ class UsersSection extends Component {
 		firebaseCustomersObject  : '',
 		firebaseRestaurantObject : '',
 		allCustomers             : [],
-		allRestaurants           : []
+		allRestaurants           : [],
+		viewRestaurantMenu       : false
 	}
 
 	componentDidMount(){
@@ -85,6 +86,50 @@ class UsersSection extends Component {
 		this.setState({firebaseCustomersObject:firebaseCustomersObject});
 	}
 
+	toggleUserPrivilege = (customer)=>{
+		if(customer.status == Constants.ACCOUNT_USER_STATUS.ACCEPTED){
+			this.props.setDisplayLoading(true);
+			this.props.doUseFirebaseObject	
+				.database()
+				.ref("USERS/"
+					+String(customer.accountID))
+				.update({
+					'status' : Constants.ACCOUNT_USER_STATUS.BLOCKED
+				})
+				.then(()=>{
+					setTimeout(()=>{
+						this.props.setDisplayLoading(false);
+						alert('Blocked');
+					},Constants.LOG_DISPLAY_TIME);	
+				})
+				.catch((error)=>{
+					this.props.setDisplayLoading(false);
+					alert('Error in connecting to the server');
+				});
+		}
+		else{
+			this.props.setDisplayLoading(true);
+			this.props.doUseFirebaseObject	
+				.database()
+				.ref("USERS/"
+					+String(customer.accountID))
+				.update({
+					'status' : Constants.ACCOUNT_USER_STATUS.ACCEPTED
+				})
+				.then(()=>{
+					setTimeout(()=>{
+						this.props.setDisplayLoading(false);
+						alert('Unblocked');
+					},Constants.LOG_DISPLAY_TIME);	
+				})
+				.catch((error)=>{
+					this.props.setDisplayLoading(false);
+					alert('Error in connecting to the server');
+				});
+		}
+	}
+
+
 	displayAllRegisteredCustomers = ()=>{
 		if(this.state.loadingCustomersData == false && this.state.allCustomers.length == 0){
 			return 	<p
@@ -106,7 +151,6 @@ class UsersSection extends Component {
 			return this.state.allCustomers.map((customer)=>{
 				return 	<div 
 							style ={{
-								height: '100px',
 								width: '90%',
 								position: 'relative',
 								marginTop: '10px',
@@ -114,10 +158,11 @@ class UsersSection extends Component {
 								border: 'solid',
 								left: '5%',
 								borderWidth: '0.1px',
-								paddingTop: '10px'
+								paddingTop: '10px',
+								paddingBottom: '15px'
 							}}>
 								<p style ={{
-									height: '15%',
+									height: '20px',
 									position:'relative',
 									width: '50%',
 									left: '25%',
@@ -127,7 +172,7 @@ class UsersSection extends Component {
 									{'First name: '+String(customer.firstName)}
 								</p>
 								<p style ={{
-									height: '15%',
+									height: '20px',
 									position:'relative',
 									width: '50%',
 									left: '25%',
@@ -137,7 +182,7 @@ class UsersSection extends Component {
 									{'Last name: '+String(customer.lastName)}
 								</p>
 								<p style ={{
-									height: '15%',
+									height: '20px',
 									position:'relative',
 									width: '50%',
 									left: '25%',
@@ -147,7 +192,7 @@ class UsersSection extends Component {
 									{'Gender: '+String(customer.gender)}
 								</p>
 								<p style ={{
-									height: '15%',
+									height: '20px',
 									position:'relative',
 									width: '50%',
 									left: '25%',
@@ -157,7 +202,7 @@ class UsersSection extends Component {
 									{'Address: '+String(customer.address)}
 								</p>
 								<p style ={{
-									height: '15%',
+									height: '20px',
 									position:'relative',
 									width: '50%',
 									left: '25%',
@@ -167,7 +212,7 @@ class UsersSection extends Component {
 									{'Email: '+String(customer.email)}
 								</p>
 								<p style ={{
-									height: '15%',
+									height: '20px',
 									position:'relative',
 									width: '50%',
 									left: '25%',
@@ -176,8 +221,82 @@ class UsersSection extends Component {
 								}}>
 									{'ID: '+String(customer.accountID)}
 								</p>
+								<p style ={{
+									height: '20px',
+									position:'relative',
+									width: '50%',
+									left: '25%',
+									fontSize: '13px',
+									textAlign: 'center',
+									fontWeight: 'bold'
+								}}>
+									{'Status: '
+										+(customer.status == Constants.ACCOUNT_USER_STATUS.ACCEPTED ? 
+											'Valid' : 'Blocked' )}
+								</p>
+								<p 
+									onClick = {()=>this.toggleUserPrivilege(customer)}
+									style ={{
+									height: '25px',
+									position:'relative',
+									width: '130px',
+									fontSize: '14px',
+									textAlign: 'center',
+									fontWeight: 'bold',
+									border: 'solid',
+									borderRadius: '15px',
+									paddingTop: '2px',
+									cursor: 'pointer',
+									margin: '0 auto'
+								}}>
+									{(customer.status == Constants.ACCOUNT_USER_STATUS.ACCEPTED ? 
+											'Block User' : 'Unblock User' )}
+								</p>
 						</div>
 			});
+		}
+	}
+
+	toggleRestaurantPrivilege = (restaurant)=>{
+		if(restaurant.placeStatus == Constants.RESTAURANT_PLACE_STATUS.ACCEPTED){
+			this.props.setDisplayLoading(true);
+			this.props.doUseFirebaseObject
+				.database()
+				.ref("RESTAURANT/"
+					+String(restaurant.key))
+				.update({
+					'placeStatus' : Constants.RESTAURANT_PLACE_STATUS.BLOCKED
+				})
+				.then(()=>{
+					setTimeout(()=>{
+						this.props.setDisplayLoading(false);
+						alert('Blocked');
+					},Constants.LOG_DISPLAY_TIME);
+				})
+				.catch((error)=>{
+					this.props.setDisplayLoading(false);
+					alert('Error in connecting to the server');
+				});
+		}
+		else{
+			this.props.setDisplayLoading(true);
+			this.props.doUseFirebaseObject
+				.database()
+				.ref("RESTAURANT/"
+					+String(restaurant.key))
+				.update({
+					'placeStatus' : Constants.RESTAURANT_PLACE_STATUS.ACCEPTED
+				})
+				.then(()=>{
+					setTimeout(()=>{
+						this.props.setDisplayLoading(false);
+						alert('Accepted');
+					},Constants.LOG_DISPLAY_TIME);
+				})
+				.catch((error)=>{
+					this.props.setDisplayLoading(false);
+					alert('Error in connecting to the server');
+				});
 		}
 	}
 
@@ -199,7 +318,28 @@ class UsersSection extends Component {
 				 	</p>
 		}
 		else{
-			return this.state.allRestaurants.map((restaurant)=>{
+			const button = 	<p
+								onClick = {()=>this.toggleViewRestaurantMenu()}
+								style ={{
+									height: '41px',
+									position: 'fixed',
+									left: '93%',
+									top: '67px',
+									width: '51px',
+									borderRadius: '100%',
+									paddingTop: '7px',
+									textAlign: 'center',
+									fontWeight: 'bold',
+									cursor: 'pointer',
+									backgroundColor :'#000',
+									fontSize: '12px',
+									color: '#fff'
+								}}>
+								{	this.state.viewRestaurantMenu ? 
+									'Close Menu':
+									'View Menu'}
+							</p>
+			const data =  this.state.allRestaurants.map((restaurant)=>{
 				return 	<div 
 							style ={{
 								width: '90%',
@@ -209,23 +349,24 @@ class UsersSection extends Component {
 								border: 'solid',
 								left: '5%',
 								borderWidth: '0.1px',
-								paddingTop: '10px'
+								paddingTop: '10px',
+								paddingBottom: '10px'
 							}}>
 								<p style ={{
-									height: '40px',
+									height: '25x',
 									position:'relative',
-									width: '50%',
-									left: '25%',
+									width: '90%',
+									margin: '0 auto',
 									fontSize: '13px',
 									textAlign: 'center'
 								}}>
 									{'Restaurant name: '+String(restaurant.restaurantName)}
 								</p>
 								<p style ={{
-									height: '40px',
+									height: '22px',
 									position:'relative',
-									width: '50%',
-									left: '25%',
+									width: '90%',
+									margin: '0 auto',
 									fontSize: '13px',
 									textAlign: 'center'
 								}}>
@@ -242,9 +383,156 @@ class UsersSection extends Component {
 									{'Location: '+ (restaurant.location ?
 										restaurant.location.addressName : 'Location has not been set')}
 								</p>
+								<p style ={{
+									height: '20px',
+									position:'relative',
+									width: '80%',
+									margin: '0 auto',
+									fontSize: '13px',
+									textAlign: 'center',
+									fontWeight: 'bold'
+								}}>
+									{'Status: '
+										+(restaurant.placeStatus == Constants.RESTAURANT_PLACE_STATUS.ACCEPTED ? 
+											'Currently Operating' : 'Waiting for validation' )}
+								</p>
+								<p
+									onClick = {()=>this.toggleRestaurantPrivilege(restaurant)}
+									style ={{
+										height: '25px',
+										position:'relative',
+										width: '140px',
+										fontSize: '14px',
+										textAlign: 'center',
+										fontWeight: 'bold',
+										border: 'solid',
+										borderRadius: '15px',
+										paddingTop: '2px',
+										cursor: 'pointer',
+										margin: '0 auto'
+									}}>
+									{(restaurant.placeStatus == Constants.RESTAURANT_PLACE_STATUS.BLOCKED ?
+										'Accept Restaurant' : 'Block Restaurant')}
+								</p>
+								
+								{
+									this.state.viewRestaurantMenu ?
+									<div style ={{
+											width: '99%',
+											position: 'relative',
+											marginTop: '10px',
+											overflow: 'scroll',
+											overflowX: 'hidden',
+											paddingTop: '5px',
+											paddingBottom:'5px'
+									}}>
+										{
+											!restaurant.Menu ?
+											<p style ={{
+												height: '30x',
+												position:'relative',
+												width: '91%',
+												margin: '0 auto',
+												fontSize: '13px',
+												textAlign: 'center',
+												fontWeight: 'bold',
+												top:'5px'
+											}}>
+												{'No dish have been added'}
+											</p>:
+											(this.displayMenuCreated(restaurant))
+										}
+									</div>:
+									<React.Fragment>
+									</React.Fragment>
+								}
 						</div>
 			});
+			return 	<React.Fragment>
+						{data}
+						{button}
+					</React.Fragment>
 		}
+	}
+
+	displayMenuCreated = (restaurant)=>{
+		const dishWithKey = restaurant.Menu;
+		const allDishes   = [];
+		Object
+			.keys(dishWithKey)
+			.forEach((dishKey)=>{
+				allDishes.push(dishWithKey[dishKey]);
+			});
+		return allDishes.map((dish)=>{
+			return 	<div 
+						style ={{
+							width: '70%',
+							position: 'relative',
+							margin: '0 auto',
+							marginTop: '7px',
+							marginBottom: '7px',
+							paddingBottom: '5px',
+							paddingTop: '5px',
+							borderBottom: 'solid'
+						}}>
+						<p 
+							style ={{
+								height:'20px',
+								width: '100%',
+								margin: '0 auto',
+								fontSize: '13px',
+								textAlign: 'center'
+							}}>
+							{'Name: '+dish.name}
+						</p>
+						<p 
+							style ={{
+								height:'20px',
+								width: '100%',
+								margin: '0 auto',
+								fontSize: '13px',
+								textAlign: 'center'
+							}}>
+							{'Type: '+dish.foodType}
+						</p>
+						<p 
+							style ={{
+								height:'20px',
+								width: '100%',
+								margin: '0 auto',
+								fontSize: '13px',
+								textAlign: 'center'
+							}}>
+							{'Price: '+dish.price}
+						</p>
+						<p 
+							style ={{
+								height:'20px',
+								width: '100%',
+								margin: '0 auto',
+								fontSize: '13px',
+								textAlign: 'center'
+							}}>
+							{'Good for '+dish.price}
+						</p>
+						<p 
+							style ={{
+								height:'42px',
+								width: '50%',
+								margin: '0 auto',
+								fontSize: '13px',
+								textAlign: 'center'
+							}}>
+							{'Description: '+ (
+								dish.description.length == 0 ?
+								'No description' : dish.description)}
+						</p>
+					</div>
+		});
+	}
+
+	toggleViewRestaurantMenu = ()=>{
+		this.setState({viewRestaurantMenu:!this.state.viewRestaurantMenu});
 	}
 
 

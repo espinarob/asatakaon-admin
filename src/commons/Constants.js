@@ -13,6 +13,14 @@ const Constants  = {
 		CUSTOMERS       : 'CUSTOMERS',
 		RESTAURANTS     : 'RESTAURANTS'
 	},
+	RESTAURANT_PLACE_STATUS  : {
+		BLOCKED              : 'BLOCKED',
+		ACCEPTED             : 'ACCEPTED'
+	},
+	ACCOUNT_USER_STATUS      : {
+		BLOCKED              : 'BLOCKED',
+		ACCEPTED             : 'ACCEPTED'
+	},
 	FIRE_BASE_CONFIG            : {
 		apiKey: "AIzaSyCmZpd23BMyDDTnNhcHoXPUnD6eLgxZ6J8",
 	    authDomain: "asatakaonproj.firebaseapp.com",
@@ -21,7 +29,7 @@ const Constants  = {
 	    storageBucket: "asatakaonproj.appspot.com",
 	    messagingSenderId: "1094462141971"
 	},
-	LOG_DISPLAY_TIME    : 1500,
+	LOG_DISPLAY_TIME    : 2000,
 	ADMIN_ACCOUNT_USERNAME : 'ADMIN_ACCOUNT_USERNAME',
 	ADMIN_ACCOUNT_PASSWORD : 'ADMIN_ACCOUNT_PASSWORD' 
 };

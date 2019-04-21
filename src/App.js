@@ -49,7 +49,8 @@ class App extends Component {
     	if(password == undefined || username == undefined){
     		this.setState({
     			displayLoading   : false,
-    			displayOperation : Constants.APPLICATION.LOGIN_DASHBOARD
+    			displayOperation : Constants.APPLICATION.LOGIN_DASHBOARD,
+    			operationTitle   : Constants.APPLICATION_TITLE.LOGIN_DASHBOARD
     		});
     	}
     	else{
@@ -71,7 +72,8 @@ class App extends Component {
     					else{
     						this.setState({
 				    			displayLoading   : false,
-				    			displayOperation : Constants.APPLICATION.LOGIN_DASHBOARD 
+				    			displayOperation : Constants.APPLICATION.LOGIN_DASHBOARD,
+				    			operationTitle   : Constants.APPLICATION_TITLE.LOGIN_DASHBOARD 
 				    		});
     					}
     				}
@@ -117,6 +119,7 @@ class App extends Component {
 					return 	<ErrorContent/>;
 				}
 				else return	<UsersSection
+								setDisplayLoading   = {this.setDisplayLoading}
 								doUseFirebaseObject = {firebase} />;
 		}
 	}
@@ -164,6 +167,26 @@ class App extends Component {
 	            		}}>
 	            			{'Map'}
 	            		</p>
+	            		<p style ={{
+	            				height: '70%',
+	            				width: '120px',
+	            				fontSize: '14px',
+	            				fontWeight: 'bold',
+	            				left: '30px',
+	            				paddingTop: '10px',
+	            				position: 'relative',
+	            				textAlign: 'center',
+	            				display: 'inline-block',
+	            				color: '#fff',
+	            				borderBottom: (this.state.displayOperation 
+	            					== Constants.APPLICATION.HOME_MAP ?
+	            					'solid': 'none'),
+	            				borderWidth: '3.5px',
+	            				borderColor: '#555dff',
+	            				cursor: 'pointer'
+	            		}}>
+	            			{'Messages'}
+	            		</p>
 	            		<p 
 	            			onClick = {this.logoutCredential}
 	            			style ={{
@@ -171,12 +194,12 @@ class App extends Component {
 	            				width: '120px',
 	            				fontSize: '14px',
 	            				fontWeight: 'bold',
-	            				left: '13.3%',
 	            				paddingTop: '10px',
 	            				position: 'relative',
 	            				textAlign: 'center',
 	            				display: 'inline-block',
 	            				color: '#fff',
+	            				left: '11.3%',
 	            				borderWidth: '3.5px',
 	            				borderColor: '#555dff',
 	            				cursor: 'pointer'
