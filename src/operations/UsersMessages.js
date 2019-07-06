@@ -6,7 +6,8 @@ import "./UsersMessages.css";
 export default class UsersSection extends Component {
   state = {
     allMessages: [],
-    loadingMessages: true
+    loadingMessages: true,
+    firebaseMessagesID: null
   };
 
   async componentWillMount() {
@@ -15,7 +16,7 @@ export default class UsersSection extends Component {
 
   getAllReceivedMessages = async () => {
     const { doUseFirebaseObject } = this.props;
-    await doUseFirebaseObject
+    const firebaseMessagesID = await doUseFirebaseObject
       .database()
       .ref("ADMIN_MESSAGES")
       .on("value", snapshot => {
@@ -34,7 +35,16 @@ export default class UsersSection extends Component {
           });
         }
       });
+    this.setState({ firebaseMessagesID });
   };
+
+  componentWillUnmount() {
+    const { doUseFirebaseObject } = this.props;
+    doUseFirebaseObject
+      .database()
+      .ref("ADMIN_MESSAGES")
+      .off("value", this.state.firebaseMessagesID);
+  }
 
   displayAllMessages = () => {
     if (
