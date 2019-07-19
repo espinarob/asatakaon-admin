@@ -14,6 +14,17 @@ export default class UsersSection extends Component {
     await this.getAllReceivedMessages();
   }
 
+  async componentDidMount() {
+    const allWithKey = await this.state.allMessages;
+    allWithKey.map(msg => {
+      this.props.doUseFirebaseObject
+        .database()
+        .ref("ADMIN_MESSAGES/" + String(msg.key))
+        .update({ status: "old" });
+    });
+    this.props.setHasNewMessage(false);
+  }
+
   getAllReceivedMessages = async () => {
     const { doUseFirebaseObject } = this.props;
     const firebaseMessagesID = await doUseFirebaseObject
@@ -83,6 +94,7 @@ export default class UsersSection extends Component {
               paddingTop: "10px",
               paddingBottom: "10px"
             }}
+            key={msg.key}
           >
             <p
               style={{

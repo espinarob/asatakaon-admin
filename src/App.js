@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
+import { withRouter } from "react-router-dom";
 
 import Constants from "./commons/Constants.js";
-import ErrorContent from "./commons/ErrorContent.js";
-import LoginDashboard from "./login/LoginDashboard.js";
-import UsersSection from "./operations/UsersSection.js";
-import UsersMessages from "./operations/UsersMessages";
+import Display from "./commons/Display";
 import "./App.css";
 
 class App extends Component {
@@ -16,7 +14,7 @@ class App extends Component {
     displayLoading: false
   };
 
-  componentDidMount() {
+  async componentWillMount() {
     if (!firebase.apps.length) {
       firebase.initializeApp(Constants.FIRE_BASE_CONFIG);
     }
@@ -27,10 +25,6 @@ class App extends Component {
     this.setState({ displayLoading: flag });
   };
 
-  setDisplayOperation = operation => {
-    this.setState({ displayOperation: operation });
-  };
-
   setSuccessfullyLoggedIn = (flag, data) => {
     if (flag) {
       this.setState({
@@ -39,6 +33,7 @@ class App extends Component {
         operationTitle: Constants.APPLICATION_TITLE.HOME
       });
       this.saveCredentialLocally(data);
+      this.props.history.push("/admin/users/customers");
     }
   };
 
@@ -52,6 +47,7 @@ class App extends Component {
         displayOperation: Constants.APPLICATION.LOGIN_DASHBOARD,
         operationTitle: Constants.APPLICATION_TITLE.LOGIN_DASHBOARD
       });
+      this.props.history.push("/login");
     } else {
       firebase
         .database()
@@ -61,26 +57,29 @@ class App extends Component {
             const adminCredential = JSON.parse(JSON.stringify(snapshot.val()));
             if (
               adminCredential.username == username &&
-              adminCredential.password == password
+              adminCredential.password == password &&
+              typeof firebase.database() !== "undefined"
             ) {
               this.setState({
-                displayLoading: false,
-                displayOperation: Constants.APPLICATION.HOME_MESSAGES,
                 successfullyLoggedIn: true,
-                operationTitle: Constants.APPLICATION_TITLE.HOME
+                operationTitle: Constants.APPLICATION_TITLE.HOME,
+                displayLoading: false
               });
+              this.props.history.push("/admin/users/customers");
             } else {
               this.setState({
                 displayLoading: false,
                 displayOperation: Constants.APPLICATION.LOGIN_DASHBOARD,
                 operationTitle: Constants.APPLICATION_TITLE.LOGIN_DASHBOARD
               });
+              this.props.history.push("/login");
             }
           } else {
             this.setState({
               displayLoading: false,
               displayOperation: Constants.APPLICATION.LOGIN_DASHBOARD
             });
+            this.props.history.push("/login");
           }
         });
     }
@@ -104,167 +103,13 @@ class App extends Component {
         displayLoading: false
       });
     }, 1500);
-  };
-
-  mainDashboarDisplay = () => {
-    switch (this.state.displayOperation) {
-      case Constants.APPLICATION.LOGIN_DASHBOARD:
-        return (
-          <LoginDashboard
-            setDisplayLoading={this.setDisplayLoading}
-            setSuccessfullyLoggedIn={this.setSuccessfullyLoggedIn}
-            doUseFirebaseObject={firebase}
-          />
-        );
-      case Constants.APPLICATION.HOME_USERS:
-        if (this.state.successfullyLoggedIn == false) {
-          return <ErrorContent />;
-        } else
-          return (
-            <UsersSection
-              setDisplayLoading={this.setDisplayLoading}
-              doUseFirebaseObject={firebase}
-            />
-          );
-      case Constants.APPLICATION.HOME_MESSAGES:
-        if (this.state.successfullyLoggedIn == false) {
-          return <ErrorContent />;
-        } else
-          return (
-            <UsersMessages
-              setDisplayLoading={this.setDisplayLoading}
-              doUseFirebaseObject={firebase}
-            />
-          );
-    }
-  };
-
-  displayLoggedInFeatures = () => {
-    if (this.state.successfullyLoggedIn) {
-      return (
-        <React.Fragment>
-          <p
-            style={{
-              height: "70%",
-              width: "120px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              left: "30px",
-              paddingTop: "10px",
-              position: "relative",
-              textAlign: "center",
-              display: "inline-block",
-              color: "#fff",
-              borderBottom: "solid",
-              borderWidth:
-                this.state.displayOperation == Constants.APPLICATION.HOME_USERS
-                  ? "3.5px"
-                  : "0",
-              borderColor: "#555dff",
-              cursor: "pointer"
-            }}
-            onClick={() =>
-              this.setState({
-                displayOperation: Constants.APPLICATION.HOME_USERS
-              })
-            }
-          >
-            {"Users"}
-          </p>
-          <p
-            style={{
-              height: "70%",
-              width: "120px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              left: "30px",
-              paddingTop: "10px",
-              position: "relative",
-              textAlign: "center",
-              display: "inline-block",
-              color: "#fff",
-              borderBottom: "solid",
-              borderWidth:
-                this.state.displayOperation ==
-                Constants.APPLICATION.HOME_MESSAGES
-                  ? "3.5px"
-                  : "0",
-              borderColor: "#555dff",
-              cursor: "pointer"
-            }}
-            onClick={() =>
-              this.setState({
-                displayOperation: Constants.APPLICATION.HOME_MESSAGES
-              })
-            }
-          >
-            {"Messages"}
-          </p>
-          <p
-            onClick={this.logoutCredential}
-            style={{
-              height: "70%",
-              width: "120px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              paddingTop: "10px",
-              position: "relative",
-              textAlign: "center",
-              display: "inline-block",
-              color: "#fff",
-              left: "11.3%",
-              borderWidth: "3.5px",
-              borderColor: "#555dff",
-              cursor: "pointer"
-            }}
-          >
-            {"Logout"}
-          </p>
-        </React.Fragment>
-      );
-    }
+    this.props.history.push("/login");
   };
 
   render() {
     return (
       <div className="App">
-        <div id="ApplicationHeader">
-          <p
-            style={{
-              height: "70%",
-              width: "150px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              left: "15px",
-              paddingTop: "10px",
-              position: "relative",
-              textAlign: "center",
-              display: "inline-block",
-              color: "#fff",
-              cursor: "pointer"
-            }}
-          >
-            {"Asa-Ta-Kaon Admin"}
-          </p>
-          <p
-            style={{
-              height: "70%",
-              width: "150px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              left: "20px",
-              paddingTop: "10px",
-              position: "relative",
-              textAlign: "center",
-              display: "inline-block",
-              color: "#fff"
-            }}
-          >
-            {this.state.operationTitle}
-          </p>
-          {this.displayLoggedInFeatures()}
-        </div>
-        <div id="ApplicationContent">{this.mainDashboarDisplay()}</div>
+        <Display {...this.state} {...this} firebase={firebase} />
         {this.state.displayLoading ? (
           <div
             style={{
@@ -320,4 +165,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

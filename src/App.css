@@ -5,19 +5,19 @@
   width: 100%;
   position: fixed;
 }
-*{
+* {
   vertical-align: top;
   margin: 0;
   padding: 0;
 }
-#ApplicationHeader{
+#ApplicationHeader {
   height: 50px;
-  width: 5000px;
-  position: relative;
+  width: 100%;
+  position: fixed;
   background-color: #000;
   position: fixed;
 }
-#ApplicationContent{
+#ApplicationContent {
   height: 100%;
   width: 100%;
   top: 50px;

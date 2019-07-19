@@ -1,0 +1,110 @@
+.edit_restaurant_user_wrap {
+  height: 100%;
+  width: 80%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.edit_restaurant_empty_wrap {
+  width: 60%;
+  margin: 0 auto;
+  position: relative;
+  top: 150px;
+  height: 5%;
+  font-weight: bold;
+  text-align: center;
+}
+.edit_restaurant_delete_wrap {
+  width: 100%;
+  height: 50px;
+  position: relative;
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+.edit_restaurant_delete_button {
+  height: 100%;
+  font-size: 14px;
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #3ff25d;
+  color: white;
+  font-weight: bold;
+}
+.edit_restaurant_verify_wrap {
+  width: 100%;
+  height: 50px;
+  position: relative;
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+}
+.edit_restaurant_verify_confirm,
+.edit_restaurant_verify_cancel {
+  height: 100%;
+  font-size: 14px;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.edit_restaurant_verify_confirm {
+  background-color: #4287f5;
+}
+.edit_restaurant_verify_cancel {
+  background-color: #f0512e;
+}
+.edit_restaurant_menu_wrap {
+  width: 100%;
+  position: relative;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+}
+.edit_restaurant_menu_label {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  width: 150px;
+  position: relative;
+  margin: 0 auto;
+}
+.edit_restaurant_menu_no {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 10px;
+  color: red;
+}
+.edit_restaurant_menu_all_wrap {
+  width: 55%;
+  margin: 0 auto;
+  margin-top: 35px;
+  margin-bottom: 10px;
+  padding-left: 40px;
+}
+.restaurant_menu_name,
+.restaurant_menu_type,
+.restaurant_menu_price,
+.restaurant_menu_desc {
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

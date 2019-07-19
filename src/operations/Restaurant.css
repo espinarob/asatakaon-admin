@@ -1,0 +1,154 @@
+.restaurant_view_wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+.restaurant_view_header {
+  height: 50px;
+  width: 95%;
+  position: relative;
+  vertical-align: top;
+  top: 0;
+  margin: 0;
+  display: flex;
+  margin: 0 auto;
+}
+#restaurant_view_search {
+  height: 80%;
+  width: 180px;
+  position: relative;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  top: 5%;
+  font-size: 13px;
+  padding-left: 10px;
+  margin-left: 20px;
+}
+.restaurant_view_search_icon {
+  font-size: 25px;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding-top: 10px;
+}
+.restaurant_view_data {
+  width: 90%;
+  padding-bottom: 50px;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 23px;
+}
+.restaurant_view_empty {
+  width: 60%;
+  margin: 0 auto;
+  position: relative;
+  top: 150px;
+  height: 5%;
+  font-weight: bold;
+  text-align: center;
+}
+.restaurant_view_eachuser {
+  width: 90%;
+  height: 20%;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  border-bottom: solid;
+  border-width: 0.3px;
+  margin-top: 25px;
+  padding-left: 5%;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+.restaurant_view_userwrapper {
+  height: 550px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.restaurant_view_page_button_wrapper {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-content: center;
+  width: 100%;
+  position: relative;
+  margin-left: -150px;
+  margin-top: 100px;
+}
+.restaurant_view_next,
+.restaurant_view_prev {
+  position: relative;
+  height: 100%;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.restaurant_view_select_page_wrapper {
+  width: 60px;
+  height: 60%;
+  border: solid;
+  border-radius: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  position: relative;
+  top: 20%;
+}
+.restaurant_view_select_dom {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.restaurant_view_filter_label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin-left: 15px;
+}
+.restaurant_view_filter_wrap,
+.restaurant_view_status_wrap {
+  position: relative;
+  height: 60%;
+  top: 16%;
+  border: solid;
+  border-radius: 10px;
+  margin-left: 10px;
+  display: flex;
+}
+#restaurant_view_filter_select,
+#restaurant_view_status_select {
+  height: 90%;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+.restaurant_view_status_label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin-left: 15px;
+}

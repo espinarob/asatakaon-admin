@@ -1,0 +1,66 @@
+.edit_customer_user_wrap {
+  height: 100%;
+  width: 80%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.edit_customer_empty_wrap {
+  width: 60%;
+  margin: 0 auto;
+  position: relative;
+  top: 150px;
+  height: 5%;
+  font-weight: bold;
+  text-align: center;
+}
+.edit_customer_delete_wrap {
+  width: 100%;
+  height: 50px;
+  position: relative;
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+.edit_customer_delete_button {
+  height: 100%;
+  font-size: 14px;
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #3ff25d;
+  color: white;
+  font-weight: bold;
+}
+.edit_customer_verify_wrap {
+  width: 100%;
+  height: 50px;
+  position: relative;
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+}
+.edit_customer_verify_confirm,
+.edit_customer_verify_cancel {
+  height: 100%;
+  font-size: 14px;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.edit_customer_verify_confirm {
+  background-color: #4287f5;
+}
+.edit_customer_verify_cancel {
+  background-color: #f0512e;
+}
