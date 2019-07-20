@@ -22,6 +22,21 @@ export default class RestaurantUser extends Component {
       });
   };
 
+  togglePlaceStatus = () => {
+    const fstatus =
+      this.props.selectedRestaurant.placeStatus === "ACCEPTED"
+        ? "BLOCKED"
+        : "ACCEPTED";
+    this.props.doUseFirebaseObject
+      .database()
+      .ref("RESTAURANT/" + String(this.props.selectedRestaurant.key))
+      .update({ placeStatus: String(fstatus) })
+      .then(() => {
+        alert("Success");
+        this.props.history.push("/admin/users/restaurants");
+      });
+  };
+
   displayMenu = () => {
     const display = [];
 
@@ -82,6 +97,16 @@ export default class RestaurantUser extends Component {
                   {"The restaurant owner hasn't created any menu"}
                 </div>
               )}
+            </div>
+            <div className="edit_restaurant_status_wrap">
+              <div
+                className="edit_restaurant_button"
+                onClick={() => this.togglePlaceStatus()}
+              >
+                {this.props.selectedRestaurant.placeStatus === "ACCEPTED"
+                  ? "Block (Currently unblocked)"
+                  : "Unblocked (Currently blocked)"}
+              </div>
             </div>
             <div className="edit_restaurant_delete_wrap">
               <div
