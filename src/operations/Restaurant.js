@@ -133,13 +133,9 @@ export default class Restaurant extends Component {
     }
 
     let searchResults = {};
-    if (this.state.searchInput.length > 0) {
-      searchResults = this.divisionHelper(this.searchHelper());
-    }
-    const paginationData =
-      this.state.searchInput.length > 0
-        ? searchResults
-        : this.state.paginationDiv;
+    searchResults = this.divisionHelper(this.searchHelper());
+
+    const paginationData = searchResults;
 
     if (
       this.state.searchInput.length > 0 &&
@@ -295,6 +291,20 @@ export default class Restaurant extends Component {
             restaurant.placeStatus === "ACCEPTED")
         )
           filteredValues.push(restaurant);
+      } else if (stringToSearch.length === 0) {
+        if (this.state.status === "all") {
+          filteredValues.push(restaurant);
+        } else if (
+          this.state.status === "blocked" &&
+          restaurant.placeStatus === "BLOCKED"
+        ) {
+          filteredValues.push(restaurant);
+        } else if (
+          this.state.status === "unblocked" &&
+          restaurant.placeStatus === "ACCEPTED"
+        ) {
+          filteredValues.push(restaurant);
+        }
       }
     });
     return filteredValues;

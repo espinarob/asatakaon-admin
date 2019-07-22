@@ -14,16 +14,14 @@ export default class UsersSection extends Component {
     await this.getAllReceivedMessages();
   }
 
-  async componentDidMount() {
-    const allWithKey = await this.state.allMessages;
-    allWithKey.map(msg => {
-      this.props.doUseFirebaseObject
-        .database()
-        .ref("ADMIN_MESSAGES/" + String(msg.key))
-        .update({ status: "old" });
-    });
-    this.props.setHasNewMessage(false);
-  }
+  reverseMessages = msg => {
+    const results = [];
+    if (msg.length === 0) return [];
+    for (let index = msg.length - 1; index >= 0; index--) {
+      results.push(msg[index]);
+    }
+    return results;
+  };
 
   getAllReceivedMessages = async () => {
     const { doUseFirebaseObject } = this.props;
@@ -35,11 +33,11 @@ export default class UsersSection extends Component {
           const cloudReceievedMessage = JSON.parse(
             JSON.stringify(snapshot.val())
           );
-          const initAllMessages = [];
+          let initAllMessages = [];
           Object.keys(cloudReceievedMessage).forEach(msg => {
             initAllMessages.push(cloudReceievedMessage[msg]);
           });
-
+          initAllMessages = this.reverseMessages(initAllMessages);
           this.setState({
             allMessages: initAllMessages,
             loadingMessages: false
@@ -56,6 +54,20 @@ export default class UsersSection extends Component {
       .ref("ADMIN_MESSAGES")
       .off("value", this.state.firebaseMessagesID);
   }
+
+  markRead = msg => {
+    this.props.doUseFirebaseObject
+      .database()
+      .ref("ADMIN_MESSAGES/" + String(msg.key))
+      .update({ status: "old" });
+  };
+
+  markUnread = msg => {
+    this.props.doUseFirebaseObject
+      .database()
+      .ref("ADMIN_MESSAGES/" + String(msg.key))
+      .update({ status: "new" });
+  };
 
   displayAllMessages = () => {
     if (
@@ -92,7 +104,8 @@ export default class UsersSection extends Component {
               left: "5%",
               borderWidth: "0.1px",
               paddingTop: "10px",
-              paddingBottom: "10px"
+              paddingBottom: "10px",
+              borderColor: msg.status === "new" ? "red" : "black"
             }}
             key={msg.key}
           >
@@ -156,6 +169,43 @@ export default class UsersSection extends Component {
             >
               {"Message: " + msg.message}
             </p>
+            {msg.status === "new" ? (
+              <p
+                style={{
+                  height: "25x",
+                  position: "relative",
+                  width: "90%",
+                  margin: "0 auto",
+                  fontSize: "13px",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  marginBottom: "10px",
+                  color: "red"
+                }}
+                onClick={() => this.markRead(msg)}
+              >
+                {"Mark Read"}
+              </p>
+            ) : (
+              <p
+                style={{
+                  height: "25x",
+                  position: "relative",
+                  width: "90%",
+                  margin: "0 auto",
+                  fontSize: "13px",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  marginBottom: "10px",
+                  color: "black"
+                }}
+                onClick={() => this.markUnread(msg)}
+              >
+                {"Mark Unread"}
+              </p>
+            )}
           </div>
         );
       });

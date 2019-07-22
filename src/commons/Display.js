@@ -15,7 +15,8 @@ export default class Display extends Component {
     hasNew: false,
     allNotifs: [],
     allMessages: [],
-    hasNewMsg: false
+    hasNewMsg: false,
+    numberofNewMsg: 0
   };
 
   componentDidMount() {
@@ -66,11 +67,15 @@ export default class Display extends Component {
         if (snapshot.exists()) {
           const allMsgWithKey = JSON.parse(JSON.stringify(snapshot.val()));
           const initAllMessages = [];
+          let newMsg = 0;
           Object.keys(allMsgWithKey).forEach(msgkey => {
             initAllMessages.push(allMsgWithKey[msgkey]);
+            if (allMsgWithKey[msgkey].status === "new") newMsg += 1;
           });
+          if (newMsg === 0) this.setState({ hasNewMsg: false });
+          else this.setState({ hasNewMsg: true });
           this.setState({ allMessages: initAllMessages });
-          this.determineNewMessages();
+          this.setState({ numberofNewMsg: newMsg });
         } else console.log("Empty messages");
       });
   };
@@ -79,14 +84,6 @@ export default class Display extends Component {
     this.state.allNotifs.map(notif => {
       if (notif.status === "new") {
         this.setState({ hasNew: true });
-      }
-    });
-  };
-
-  determineNewMessages = () => {
-    this.state.allMessages.map(msg => {
-      if (msg.status === "new") {
-        this.setState({ hasNewMsg: true });
       }
     });
   };
@@ -119,11 +116,19 @@ export default class Display extends Component {
               display: "inline-block",
               color: "#fff",
               cursor: "pointer",
+              color: this.state.hasNew ? "red" : "white",
               outline: "none"
             }}
             to="/admin/users/customers"
           >
-            <p style={{ display: "inline-block" }}>{"Users"}</p>
+            <Fragment>
+              <p style={{ display: "inline-block" }}>{"Users"}</p>
+              {this.state.hasNew ? (
+                <p style={{ fontSize: "11px", display: "inline-block" }}>
+                  {"New"}
+                </p>
+              ) : null}
+            </Fragment>
           </NavLink>
           <NavLink
             style={{
@@ -144,35 +149,8 @@ export default class Display extends Component {
             <Fragment>
               <p style={{ display: "inline-block" }}>{"Messages"}</p>
               {this.state.hasNewMsg ? (
-                <p style={{ fontSize: "10px", display: "inline-block" }}>
-                  {"New"}
-                </p>
-              ) : null}
-            </Fragment>
-          </NavLink>
-          <NavLink
-            style={{
-              height: "70%",
-              width: "120px",
-              fontSize: "14px",
-              fontWeight: "bold",
-              left: "30px",
-              paddingTop: "10px",
-              position: "relative",
-              textAlign: "center",
-              display: "inline-block",
-              color: "#fff",
-              cursor: "pointer",
-              color: this.state.hasNew ? "red" : "white"
-            }}
-            to="/admin/notifications"
-            onClick={() => this.setNotifToOld()}
-          >
-            <Fragment>
-              <p style={{ display: "inline-block" }}>{"Notifications"}</p>
-              {this.state.hasNew ? (
-                <p style={{ fontSize: "10px", display: "inline-block" }}>
-                  {"New"}
+                <p style={{ fontSize: "11px", display: "inline-block" }}>
+                  {this.state.numberofNewMsg}
                 </p>
               ) : null}
             </Fragment>
@@ -273,44 +251,6 @@ export default class Display extends Component {
                   doUseFirebaseObject={this.props.firebase}
                 />
               )}
-            />
-            <Route
-              path="/admin/notifications"
-              render={props => {
-                if (this.state.hasNew) {
-                  return (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "200px",
-                        width: "50%",
-                        left: "25%",
-                        fontWeight: "bold",
-                        textAlign: "center"
-                      }}
-                    >
-                      {
-                        "There are new registered restaurant owners, see more at Users/Restaurants list"
-                      }
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "200px",
-                        width: "50%",
-                        left: "25%",
-                        fontWeight: "bold",
-                        textAlign: "center"
-                      }}
-                    >
-                      {"No new registered restaurant owner"}
-                    </div>
-                  );
-                }
-              }}
             />
             <Route exact component={ErrorContent} />
           </Switch>
